@@ -12,8 +12,13 @@ import {
   View
 } from 'react-native';
 
-export default class App extends Component<{}> {
+type Props = {
+  counter: number
+};
+
+export default class App extends Component<Props> {
   render() {
+    const { counter } = this.props;
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -26,6 +31,7 @@ export default class App extends Component<{}> {
           Edit your native code and define the business logic in
           javascript
         </Text>
+        <Text style={styles.instructions}>Counter: {counter}</Text>
       </View>
     );
   }

@@ -11,9 +11,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class BackgroundTaskBridgePackage implements ReactPackage {
-
-
-
     @Override
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Collections.emptyList();
@@ -23,10 +20,7 @@ public class BackgroundTaskBridgePackage implements ReactPackage {
     public List<NativeModule> createNativeModules(
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-
         modules.add(new BackgroundTaskBridge(reactContext));
-
         return modules;
     }
-
 }

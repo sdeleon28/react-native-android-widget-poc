@@ -21,18 +21,6 @@ public class BackgroundTaskBridge extends ReactContextBaseJavaModule {
 
     public BackgroundTaskBridge(final ReactApplicationContext reactContext) { super(reactContext); }
 
-    @ReactMethod
-    public void pinWidgetToHomeScreen () {
-        Context context = this.getReactApplicationContext();
-
-        ComponentName name = new ComponentName(context, WidgetProvider.class);
-        int [] ids = AppWidgetManager.getInstance(context).getAppWidgetIds(name);
-
-        Intent pickIntent = new Intent(AppWidgetManager.ACTION_APPWIDGET_PICK);
-        pickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, ids[0]);
-        context.startActivity(pickIntent);
-    }
-
     @Override
     public String getName() {
         return "BackgroundTaskBridge";
@@ -49,6 +37,9 @@ public class BackgroundTaskBridge extends ReactContextBaseJavaModule {
         AppWidgetManager.getInstance(this.getReactApplicationContext()).updateAppWidget(new ComponentName(this.getReactApplicationContext(), WidgetProvider.class), views);
     }
 
+    /**
+     * Receives data from the RN side and initialises/updates UI elements and handlers.
+     */
     @ReactMethod
     public void initializeWidgetBridge(ReadableArray starredCharms) {
         RemoteViews widgetView = new RemoteViews(this.getReactApplicationContext().getPackageName(), R.layout.appwidget);
@@ -88,6 +79,9 @@ public class BackgroundTaskBridge extends ReactContextBaseJavaModule {
         AppWidgetManager.getInstance(this.getReactApplicationContext()).updateAppWidget(new ComponentName(this.getReactApplicationContext(), WidgetProvider.class), widgetView);
     }
 
+    /**
+     * Updates one of the widget's icons with the data received from RN.
+     */
     private void updateView(RemoteViews widgetView, ReadableMap charm, Integer layout, Integer button) {
         RemoteViews charm_view = new RemoteViews(this.getReactApplicationContext().getPackageName(), layout);
         charm_view.setImageViewResource(button, getDrawable(this.getReactApplicationContext(), charm.getString("cover")));
@@ -95,6 +89,9 @@ public class BackgroundTaskBridge extends ReactContextBaseJavaModule {
         widgetView.addView(R.id.charms_layout, charm_view);
     }
 
+    /**
+     * Sets up the tap action for one of the icons.
+     */
     private void registerTask(String action, ReadableMap charm, RemoteViews widgetView, Integer button) {
         Intent intent = new Intent();
         intent.putExtra("id", charm.getString("id"));
@@ -103,8 +100,10 @@ public class BackgroundTaskBridge extends ReactContextBaseJavaModule {
         widgetView.setOnClickPendingIntent(button, pendingIntent);
     }
 
-    private static int getDrawable(Context context, String name)
-    {
+    /**
+     * Gets a drawable from the resources bundle.
+     */
+    private static int getDrawable(Context context, String name) {
         return context.getResources().getIdentifier(name.toLowerCase(),
                 "drawable", context.getPackageName());
     }

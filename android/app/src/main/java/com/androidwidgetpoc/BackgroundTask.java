@@ -11,10 +11,10 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.jstasks.HeadlessJsTaskConfig;
 
 public class BackgroundTask extends HeadlessJsTaskService {
-
     @Override
     protected @Nullable
     HeadlessJsTaskConfig getTaskConfig(Intent intent) {
+        // Do some magic to pass the event information over to the js task.
         Bundle extras = intent.getExtras();
         return new HeadlessJsTaskConfig(
                 "WidgetTask",
